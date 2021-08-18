@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form>
+    <p>
+      <label for="name">Movie</label>
+      <input type="text" name="name" id="name">
+    </p>
+    <button id="title">Search</button>
+  </form>
+  <div class="container">
+    <h1 class="watch_list">Watch List</h1>
+    <button class="save-button">SAVE</button>
+  </div>
+  
+
+
+
+
+  <script src="http://www.omdbapi.com/?i=tt3896198&apikey=48458138"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  
+  <script>
+
+    const movie = JSON.parse(localStorage.getItem('movie')) || []
+    document.getElementById('search').addEventListener('click', event => {
+        event.preventDefault()
+   
+
+      const title = document.getElementById('title').value
+      cosole.log(title)
+        axios.get(`http://www.omdbapi.com/?apikey=trilogy&t=${title}`)
+          .then(res => {
+            const data = res.data
+            console.log(data)
+
+            let movieElem = document.createElement('div')
+            movieElem.innerHTML =`
+            <h2>${title}</h2>
+            <img src="{data.Poster} alt = "${title}>
+            <h2>Plot</h2>
+            <p>${data.Plot}</p>
+
+           `
+
+            movie.push(title)
+            localStorage.setItem('movie',JSON.stringify(movie))
+            document.getElementById('movie').append(movieElem)
+            document.getElementById('title').value =''
+
+        })
+
+        .catch(err => console.error(err))
+
+    })
+  </script>
+  
+
+
+
+</body>
+</html>
